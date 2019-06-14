@@ -1,3 +1,5 @@
 {
-  "车位总数": 20
+  "车位总数": 20,
+  "订单创建地址": "http://localhost:3001/create",
+  "订单查询地址": "http://localhost:3001/ispay"
 }

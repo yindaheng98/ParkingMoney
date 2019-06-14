@@ -15,6 +15,18 @@ services:
     volumes: 
       - "./Data/node/app:/home/node/app"
 
+  alipay:
+    restart: always
+    build: ./node
+    expose: 
+      - "3001"
+    ports: 
+      - "3002:3001"
+    networks: 
+      - "proxy"
+    volumes: 
+      - "./Data/node/alipay:/home/node/app"
+
   mysql:
     image: mysql
     expose: 
