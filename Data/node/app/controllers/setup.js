@@ -10,7 +10,7 @@ function InitData(path) {
         if (error != null) throw error;
         con.redis.flushall(() => {
             results.forEach((result) => {
-                con.redis.set(result["车牌号"], moment(result["时间"], moment.ISO_8601).valueOf() / 1000);
+                con.redis.set(result["车牌号"], moment(result["时间"], moment.ISO_8601).valueOf());
                 settings["车位总数"]--;
             });
         });

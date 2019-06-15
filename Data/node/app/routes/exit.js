@@ -3,11 +3,11 @@ let moment = require('moment');
 let router = express.Router();
 const con = require('../controllers/connections');
 const Pay = require('../controllers/pay');
-let time = moment().valueOf() / 1000;
+let time = moment().valueOf();
 
 function Exit(id) {
     return new Promise((resolve, reject) => {
-        time = moment().valueOf() / 1000;
+        time = moment().valueOf();
         con.redis.get(id, function (err, value) {//先查一遍
             if (value != null) {//如果redis里面有值就直接用
                 let time_diff = time - value;
@@ -20,9 +20,10 @@ function Exit(id) {
                     if (error != null || results.length === 0) {//如果数据库中也无值就报错
                         return reject('查无此车');
                     }//如果数据库中有值就用数据库中的值
-                    let value = moment(results[0]["时间"], moment.ISO_8601);
+                    let value = moment(results[0]["时间"], moment.ISO_8601).valueOf();
                     let time_diff = time - value;
                     con.redis.set(id, value, (err) => {
+                        global.updated = true;
                         if (err !== null) return reject(err);
                         return resolve(time_diff);
                     });
@@ -43,10 +44,11 @@ router.get('/:id', function (request, response, next) {
     }).then(() => {
         con.redis.del(id, (error) => {//删掉时间值
             if (error != null) console.log(error);//写入失败，记录error
+            global.updated = true;
         });
         con.mysql.query(//数据库记一哈
             "INSERT INTO Cars(时间,车牌号,动作)VALUES(FROM_UNIXTIME(?),?,1)",
-            [time, id],
+            [time / 1000, id],
             (error) => {
                 if (error != null) console.log(error)//写入失败，记录error
             });

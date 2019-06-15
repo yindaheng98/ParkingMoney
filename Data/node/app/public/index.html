@@ -2,9 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>停车场出入口管理页</title>
+    <script src="javascripts/lib/vue.js"></script>
+    <script src="javascripts/lib/jquery-1.11.0.min.js"></script>
 </head>
 <body>
-
+<div id="current">
+    <h1>剩余车位{{ 剩余车位 }}</h1>
+    <h1>停车场内当前车辆</h1>
+    <table>
+        <thead>
+        <tr>
+            <td>车牌号</td>
+            <td>进入时间</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="car in 车辆列表">
+            <td>{{ car[0] }}</td>
+            <td>{{ car[1] }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="history"></div>
 </body>
+<script src="javascripts/index_dynamic.js"></script>
 </html>
