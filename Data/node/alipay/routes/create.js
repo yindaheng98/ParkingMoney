@@ -3,7 +3,7 @@ let router = express.Router();
 const qrcode = require('../controllers/lib/qrcode');
 const crypto = require('crypto');
 const length = 16;
-const pay_url = 'http://yindaheng98.top:3002/ispay/';
+const pay_url = 'http://yindaheng98.top:3002/pay/';
 
 router.get('/:money', function (request, response, next) {
     let id = '';

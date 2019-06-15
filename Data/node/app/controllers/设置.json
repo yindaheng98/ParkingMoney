@@ -1,5 +1,5 @@
 {
   "车位总数": 20,
-  "订单创建地址": "http://alipay:3001/create",
-  "订单查询地址": "http://alipay:3001/ispay"
+  "订单创建地址": "http://alipay:3000/create",
+  "订单查询地址": "http://alipay:3000/ispay"
 }

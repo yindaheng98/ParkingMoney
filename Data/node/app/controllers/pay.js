@@ -25,8 +25,7 @@ function QueryLoop(url, during, times, resolve, reject) {
             s += data;
         });
         req.on('end', () => {
-            if (s === 'yes')
-                return resolve();
+            if (s === 'yes') return resolve();
             if (times <= 0) return reject('支付超时');
             setTimeout(() => QueryLoop(url, during, times - 1, resolve, reject), during);
         });

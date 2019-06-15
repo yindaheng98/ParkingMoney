@@ -20,8 +20,12 @@ function Exit(id) {
                     if (error != null || results.length === 0) {//如果数据库中也无值就报错
                         return reject('查无此车');
                     }//如果数据库中有值就用数据库中的值
-                    let time_diff = time - moment(results[0]["时间"], moment.ISO_8601);
-                    return resolve(time_diff);
+                    let value = moment(results[0]["时间"], moment.ISO_8601);
+                    let time_diff = time - value;
+                    con.redis.set(id, value, (err) => {
+                        if (err !== null) return reject(err);
+                        return resolve(time_diff);
+                    });
                 });
         });
     })
