@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>停车场出入口管理页</title>
+    <link rel="stylesheet" href="stylesheets/skeleton.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
     <script src="javascripts/lib/vue.js"></script>
     <script src="javascripts/lib/jquery-1.11.0.min.js"></script>
 </head>
 <body>
 <div id="current">
     <h1>剩余车位{{ 剩余车位 }}</h1>
-    <h1>停车场内当前车辆</h1>
+    <h3>停车场内当前车辆</h3>
     <table>
         <thead>
         <tr>
@@ -25,7 +27,45 @@
         </tbody>
     </table>
 </div>
-<div id="history"></div>
+
+<h3 style="display: inline-block">历史记录</h3>
+<button onclick="updateCars()">刷新</button>
+
+<div id="history" style="width: 700px">
+    <div style="display:inline-block;width: 200px;float: left">
+        <span id="车辆列表加载中">车辆列表加载中......</span>
+        <table>
+            <thead>
+            <tr>
+                <th style="width: 300px">车牌号</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="car in 车辆列表" class="选择车牌号" @click="selectCar(car,$event)">
+                <td>{{ car }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="display:inline-block;width: 400px;float: right">
+        <span id="记录列表加载中">记录列表加载中......</span>
+        <table>
+            <thead>
+            <tr>
+                <th style="width: 200px">时间</th>
+                <th style="width: 200px">记录</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="data in 车辆动作">
+                <td>{{ data[0] }}</td>
+                <td>{{ data[1] }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 <script src="javascripts/index_dynamic.js"></script>
+<script src="javascripts/index_static.js"></script>
 </html>

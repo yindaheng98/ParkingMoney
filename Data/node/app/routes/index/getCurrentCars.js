@@ -5,12 +5,16 @@ const con = require('../../controllers/connections');
 
 router.get('/', function (request, response, next) {
     con.redis.keys('*', (error, keys) => {
-        let cars = [];
+        let data = {
+            '剩余车位': global['settings']['车位总数'],
+            '车辆列表': []
+        };
         if (error !== null || keys === null || keys.length < 1) {
-            response.end(JSON.stringify(cars));
+            response.end(JSON.stringify(data));
             console.log(error);
             return;
         }
+        let cars = [];
         for (let i in keys) {
             let key = keys[i];
             con.redis.get(key, (error, value) => {
@@ -21,11 +25,8 @@ router.get('/', function (request, response, next) {
                     for (let i in cars) {
                         cars[i] = [cars[i][0], moment(parseInt(cars[i][1]))];
                     }
-                    response.end(JSON.stringify(
-                        {
-                            '剩余车位': global['settings']['车位总数'],
-                            '车辆列表': cars
-                        }));
+                    data['车辆列表'] = cars;
+                    response.end(JSON.stringify(data));
                 }
             })
         }

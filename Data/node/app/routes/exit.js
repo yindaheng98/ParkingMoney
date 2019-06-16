@@ -43,6 +43,7 @@ router.get('/:id', function (request, response, next) {
 
     }).then(() => {
         con.redis.del(id, (error) => {//删掉时间值
+            ++global['settings']['车位总数'];
             if (error != null) console.log(error);//写入失败，记录error
             global.updated = true;
         });
