@@ -8,5 +8,6 @@ a {
 }
 
 .选中车牌号 {
-    background: red;
+    background-color: #bbb;
+    border-radius: 4px;
 }
