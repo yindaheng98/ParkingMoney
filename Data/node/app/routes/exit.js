@@ -35,17 +35,21 @@ function Exit(id) {
 router.get('/:id', function (request, response, next) {
     let id = request.params.id;
     Exit(id).then((time_diff) => {
-        //搞二维码
-        return Pay.Order(time_diff / 1000);
-    }).then((data) => {
-        response.end(data['qr']);//发回二维码。然后轮询付款状态
-        return Pay.isPay(data['id'], 500, 10000);
+        return Pay.Order(id, time_diff / 1000);//创建订单搞到订单ID和二维码
+    }).then((data) => {//data就是订单ID和二维码
+        response.end(data['qr']);//发回二维码
+        //开始轮询订单状态
+        global.updated = true;
+        return Pay.isPay(id, data['id'], 500, 10000);
 
-    }).then(() => {
-        con.redis.del(id, (error) => {//删掉时间值
-            ++global['settings']['车位总数'];
-            if (error != null) console.log(error);//写入失败，记录error
-            global.updated = true;
+    }).then(() => {//Pay.isPay的resolve表示支付完成
+        con.redis.hdel('PayingCar', id, (error) => {//删掉系统中保存的订单号
+            if (error !== null) console.log(error);
+            con.redis.del(id, (error) => {//删掉时间值
+                ++global['settings']['车位总数'];
+                if (error != null) console.log(error);//写入失败，记录error
+                global.updated = true;
+            });
         });
         con.mysql.query(//数据库记一哈
             "INSERT INTO Cars(时间,车牌号,动作)VALUES(FROM_UNIXTIME(?),?,1)",
@@ -54,8 +58,9 @@ router.get('/:id', function (request, response, next) {
                 if (error != null) console.log(error)//写入失败，记录error
             });
     }).catch((e) => {
-        response.end('error');
         console.log(e);
+        if (e !== 'abort' && e !== 'timeout')
+            response.end('error');
     })
 });
 

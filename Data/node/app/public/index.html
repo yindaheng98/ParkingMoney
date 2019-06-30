@@ -17,12 +17,15 @@
         <tr>
             <td>车牌号</td>
             <td>进入时间</td>
+            <td>状态</td>
         </tr>
         </thead>
         <tbody>
         <tr v-for="car in 车辆列表">
             <td>{{ car[0] }}</td>
             <td>{{ car[1] }}</td>
+            <td v-if="付款列表.indexOf(car[0])!==-1">等待付款</td>
+            <td v-else>无活动</td>
         </tr>
         </tbody>
     </table>

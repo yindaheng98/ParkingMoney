@@ -1,13 +1,14 @@
 (function () {
     let currentVue = new Vue({
         el: "#current",
-        data: {剩余车位: 0, 车辆列表: []}
+        data: {剩余车位: 0, 车辆列表: [], 付款列表:[]}
     });
 
     function update() {
         $.getJSON("index/getCurrentCars", (data) => {
             currentVue['剩余车位'] = data['剩余车位'];
             currentVue['车辆列表'] = data['车辆列表'];
+            currentVue['付款列表'] = data['付款列表'];
         });
     }
 
