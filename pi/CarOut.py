@@ -19,18 +19,19 @@ url_ispay = 'http://yindaheng98.top:3001/ispay/'
 
 
 def loopUp():
+    global LimitAngleFlag
     AvoidValuefor = GPIO.input(AvoidSensorfor)
     if AvoidValuefor == False:
         id = capture_detect()
         print("出口处传数据"+url_exit+id)
         response = requests.get(url_exit+id)
         if response.text=='error':
-            print(response.text)
+            print('出错')
             return
         svg2png(bytestring=response.text, write_to='output.png')
         #cv2.imshow('二维码', cv2.imread('output.png'))
         print("出口处查询付款情况"+url_ispay+id)
-        response = requests.get(url_exit+id)
+        response = requests.get(url_ispay+id)
         print('result:'+response.text)
         if response.text == 'yes':
             print("开始抬杆")
