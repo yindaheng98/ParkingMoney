@@ -1,6 +1,7 @@
 version: "3"
 services: 
   node:
+    restart: always
     depends_on: 
       - mysql
       - redis
@@ -13,12 +14,9 @@ services:
       - "proxy"
     volumes: 
       - "./Data/node/app:/home/node/app"
-    restart: always
-    logging:
-      options: 
-        max-size: "10k"
 
   alipay:
+    restart: always
     build: ./node
     expose: 
       - "3000"
@@ -28,10 +26,6 @@ services:
       - "proxy"
     volumes: 
       - "./Data/node/alipay:/home/node/app"
-    restart: always
-    logging:
-      options: 
-        max-size: "10k"
 
   mysql:
     image: mysql
@@ -50,7 +44,7 @@ services:
       - "6379"
     networks: 
       - "proxy"
-   
+      
   python:
     depends_on: 
       - mysql

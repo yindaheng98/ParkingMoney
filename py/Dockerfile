@@ -1,9 +1,10 @@
-FROM python:3.5-alpine
+FROM python
+
+RUN mkdir ~/.pip
+ADD pip.conf ~/.pip/pip.conf
+RUN pip install hyperlpr mysql-connector-python -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 EXPOSE 8080
 WORKDIR /usr/src/app
 
-CMD echo "车牌识别服务初始化！" && \
-pip install --no-cache-dir -r ./requirements.txt && \
-echo "车牌识别服务启动！" && \
-python server.py
+CMD python server.py
