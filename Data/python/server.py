@@ -6,6 +6,13 @@ from hyperlpr import HyperLPR_PlateRecogntion
 import cv2
 import cgi
 from http.server import BaseHTTPRequestHandler
+import numpy as np
+
+
+def rotate(n, img):
+    for i in range(0, n):
+        img = np.flip(np.transpose(img, axes=(1, 0, 2)), 1)
+    return img
 
 
 conn = None
@@ -29,17 +36,25 @@ class PostHandler(BaseHTTPRequestHandler):
                 'CONTENT_TYPE': self.headers['Content-Type']
             }
         )
+        arg = int(form['arg'].value) if 'arg' in list(form.keys()) else 0
         self.send_response(200)
         self.end_headers()
 
         results = []
         for field in form.keys():
+            if field == 'arg':
+                continue
             field_item = form[field]
-            filename = rand_filename(conn, 32, '%s.'+form[field].filename.split('.')[-1])
-            path='images/'+filename
+            filename = rand_filename(
+                conn, 32, '%s.'+form[field].filename.split('.')[-1])
+            path = 'images/'+filename
             with open(path, 'wb') as f:
                 f.write(form[field].value)
-            result = HyperLPR_PlateRecogntion(cv2.imread(path))
+            img = rotate(arg, cv2.imread(path))
+            print(img.shape)
+            cv2.imwrite(path, img)
+            print(path)
+            result = HyperLPR_PlateRecogntion(img)
             results.append(result)
             add(conn, filename, json.dumps(result))
         self.wfile.write(json.dumps(results).encode('utf-8'))
