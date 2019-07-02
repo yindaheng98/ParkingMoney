@@ -36,8 +36,8 @@ class PostHandler(BaseHTTPRequestHandler):
         for field in form.keys():
             field_item = form[field]
             filename = rand_filename(
-                conn, 32, 'images/%s.'+form[field].filename.split('.')[-1])
-            with open(filename, 'wb') as f:
+                conn, 32, '%s.'+form[field].filename.split('.')[-1])
+            with open('images/'+filename, 'wb') as f:
                 f.write(form[field].value)
             result = HyperLPR_PlateRecogntion(cv2.imread(filename))
             results.append(result)

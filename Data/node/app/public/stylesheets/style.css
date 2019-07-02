@@ -11,3 +11,7 @@ a {
     background-color: #bbb;
     border-radius: 4px;
 }
+
+.contents{
+    height: auto;
+}

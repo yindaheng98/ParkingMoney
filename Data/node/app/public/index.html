@@ -30,45 +30,81 @@
         </tbody>
     </table>
 </div>
+<div class="contents">
+    <h3 style="display: inline-block">历史记录</h3>
+    <button onclick="updateCars()">刷新</button>
 
-<h3 style="display: inline-block">历史记录</h3>
-<button onclick="updateCars()">刷新</button>
+    <div id="history" style="width: 700px">
+        <div style="display:inline-block;width: 200px;float: left">
+            <span id="车辆列表加载中">车辆列表加载中......</span>
+            <table>
+                <thead>
+                <tr>
+                    <th style="width: 300px">车牌号</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="car in 车辆列表" class="选择车牌号" @click="selectCar(car,$event)">
+                    <td>{{ car }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="display:inline-block;width: 400px;float: right">
+            <span id="记录列表加载中">记录列表加载中......</span>
+            <table>
+                <thead>
+                <tr>
+                    <th style="width: 200px">时间</th>
+                    <th style="width: 200px">记录</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="data in 车辆动作">
+                    <td>{{ data[0] }}</td>
+                    <td>{{ data[1] }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br style="clear:both;">
+</div>
+<br>
+<br>
+<div class="contents">
+    <h3 style="display: inline-block">摄像头识别记录</h3>
+    <button onclick="updateDetects()">刷新</button>
 
-<div id="history" style="width: 700px">
-    <div style="display:inline-block;width: 200px;float: left">
-        <span id="车辆列表加载中">车辆列表加载中......</span>
-        <table>
-            <thead>
-            <tr>
-                <th style="width: 300px">车牌号</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="car in 车辆列表" class="选择车牌号" @click="selectCar(car,$event)">
-                <td>{{ car }}</td>
-            </tr>
-            </tbody>
-        </table>
+    <div id="detects">
+        <div style="display:inline-block;width: 400px;float: left">
+            <span id="识别记录加载中">摄像头识别记录加载中......</span>
+            <table>
+                <thead>
+                <tr>
+                    <th style="width: 200px">时间</th>
+                    <th style="width: 200px">识别结果</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="detect in 识别记录" class="选择识别记录" @click="selectCar(detect[1],$event)">
+                    <td>{{ detect[0] }}</td>
+                    <td>
+                        <p v-for="car in detect[2]">{{ car[0] }}</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="display:inline-block;width: 400px;float: right">
+            <div>{{ 图片 }}</div>
+            <img :src="'images/'+图片" style="width: 400px">
+        </div>
     </div>
-    <div style="display:inline-block;width: 400px;float: right">
-        <span id="记录列表加载中">记录列表加载中......</span>
-        <table>
-            <thead>
-            <tr>
-                <th style="width: 200px">时间</th>
-                <th style="width: 200px">记录</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="data in 车辆动作">
-                <td>{{ data[0] }}</td>
-                <td>{{ data[1] }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <br style="clear:both;">
 </div>
 </body>
 <script src="javascripts/index_dynamic.js"></script>
 <script src="javascripts/index_static.js"></script>
+<script src="javascripts/detect_static.js"></script>
 </html>

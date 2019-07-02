@@ -14,6 +14,7 @@ services:
       - "proxy"
     volumes: 
       - "./Data/node/app:/home/node/app"
+      - "./Data/python/images:/home/node/app/public/images"
 
   alipay:
     restart: always
