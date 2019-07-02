@@ -34,8 +34,10 @@ function Exit(id) {
 
 router.get('/:id', function (request, response, next) {
     let id = request.params.id;
+    let money = 0;
     Exit(id).then((time_diff) => {
-        return Pay.Order(id, time_diff / 1000);//创建订单搞到订单ID和二维码
+        money = time_diff / 1000;
+        return Pay.Order(id, money);//创建订单搞到订单ID和二维码
     }).then((data) => {//data就是订单ID和二维码
         response.end(data['qr']);//发回二维码
         //开始轮询订单状态
@@ -50,6 +52,12 @@ router.get('/:id', function (request, response, next) {
                 if (error != null) console.log(error);//写入失败，记录error
                 global.updated = true;
             });
+            con.mysql.query(//数据库记一哈
+                "INSERT INTO 付款记录(时间,车牌号,金额)VALUES(FROM_UNIXTIME(?),?,?)",
+                [moment().valueOf() / 1000, id, money],
+                (error) => {
+                    if (error != null) console.log(error)//写入失败，记录error
+                });
         });
         con.mysql.query(//数据库记一哈
             "INSERT INTO Cars(时间,车牌号,动作)VALUES(FROM_UNIXTIME(?),?,1)",

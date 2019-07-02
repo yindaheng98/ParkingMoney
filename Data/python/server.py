@@ -11,11 +11,12 @@ from http.server import BaseHTTPRequestHandler
 conn = None
 logging.basicConfig(level=logging.DEBUG)
 
+
 class PostHandler(BaseHTTPRequestHandler):
     def log_message(self, *args, **kwargs):
-        fmt='PostHandler.log_message(%s,%s)'
-        logging.debug(fmt%(str(args),str(kwargs)))
-        
+        fmt = 'PostHandler.log_message(%s,%s)'
+        logging.debug(fmt % (str(args), str(kwargs)))
+
     def do_POST(self):
         global conn
         if(conn == None):
@@ -31,18 +32,18 @@ class PostHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
 
-        result = []
+        results = []
         for field in form.keys():
             field_item = form[field]
             filename = rand_filename(
                 conn, 32, 'images/%s.'+form[field].filename.split('.')[-1])
             with open(filename, 'wb') as f:
                 f.write(form[field].value)
-            result.append(HyperLPR_PlateRecogntion(cv2.imread(filename)))
-            json_result = json.dumps(result)
-        self.wfile.write(json_result.encode('utf-8'))
-        if result != []:
-            add(conn, filename, json_result)
+            result = HyperLPR_PlateRecogntion(cv2.imread(filename))
+            results.append(result)
+            if result != []:
+                add(conn, filename, json.dumps(result))
+        self.wfile.write(json.dumps(results).encode('utf-8'))
         return
 
 

@@ -20,6 +20,7 @@ router.get('/:id', function (req, res, next) {
             global.updated = true;
             if (err == null) {//写入成功，返回ok
                 res.end('ok:' + --global['settings']['车位总数']);
+                global.updated = true;
                 con.mysql.query(
                     "INSERT INTO Cars(时间,车牌号,动作)VALUES(FROM_UNIXTIME(?),?,0)",
                     [time / 1000, id],

@@ -1,7 +1,7 @@
-def add(conn, image, plate):
+def add(conn, image, result):
     cursor = conn.cursor()
     cursor.execute(
-        'INSERT INTO 识别记录(时间,图片,识别结果)VALUES(now(),%s,%s)', (image, plate))
+        'INSERT INTO 识别记录(时间,图片,识别结果)VALUES(now(),%s,%s)', (image, result))
     conn.commit()
     cursor.close()
 

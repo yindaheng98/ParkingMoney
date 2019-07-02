@@ -8,6 +8,13 @@ create table Cars
 动作 boolean not null,
 primary key(时间,车牌号,动作)
 );
+create table 付款记录
+(
+时间 datetime not null,
+车牌号 varchar(7) not null,
+金额 double not null,
+primary key(时间,车牌号)
+);
 create table 识别记录
 (
 时间 datetime not null,

@@ -24,8 +24,8 @@
         <tr v-for="car in 车辆列表">
             <td>{{ car[0] }}</td>
             <td>{{ car[1] }}</td>
-            <td v-if="付款列表.indexOf(car[0])!==-1">等待付款</td>
-            <td v-else>无活动</td>
+            <td v-if="付款列表.indexOf(car[0])!==-1">付款中</td>
+            <td v-else>计费中</td>
         </tr>
         </tbody>
     </table>

@@ -4,6 +4,7 @@ const con = require('../controllers/connections');
 
 router.use('/updated', require('./index/updated'));
 router.use('/getCurrentCars', require('./index/getCurrentCars'));
+router.use('/getCarHistorys', require('./index/getCarHistorys'));
 
 router.get('/getHistoryCars', function (request, response, next) {
     con.mysql.query(
@@ -22,11 +23,9 @@ router.get('/getHistoryCars', function (request, response, next) {
     );
 });
 
-router.get('/getCarHistorys/:id', function (request, response, next) {
-    let id = request.params.id;
+router.get('/getDetects', function (request, response, next) {
     con.mysql.query(
-        "SELECT 时间,动作 FROM Cars WHERE 车牌号=? ORDER BY 时间 DESC LIMIT 1000",
-        [id],
+        "SELECT 时间,图片,识别结果 FROM 识别记录 ORDER BY 时间 DESC LIMIT 1000",
         (error, results) => {
             let history = [];
             if (error != null) {
@@ -37,7 +36,7 @@ router.get('/getCarHistorys/:id', function (request, response, next) {
             for (let i in results) {
                 let result = results[i];
                 history.push(
-                    [result['时间'], result['动作'] < 2 ? ['进入', '离开'][parseInt(result['动作'])] : 'error']
+                    [result['时间'], result['图片'], JSON.parse(result['识别结果'])]
                 );
             }
             response.end(JSON.stringify(history));
