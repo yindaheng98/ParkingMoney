@@ -41,8 +41,7 @@ class PostHandler(BaseHTTPRequestHandler):
                 f.write(form[field].value)
             result = HyperLPR_PlateRecogntion(cv2.imread(path))
             results.append(result)
-            if result != []:
-                add(conn, filename, json.dumps(result))
+            add(conn, filename, json.dumps(result))
         self.wfile.write(json.dumps(results).encode('utf-8'))
         return
 
