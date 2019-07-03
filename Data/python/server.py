@@ -28,6 +28,10 @@ class PostHandler(BaseHTTPRequestHandler):
         global conn
         if(conn == None):
             conn = connect()
+        try:
+            conn.cursor()
+        except:
+            conn=connect()
         form = cgi.FieldStorage(
             fp=self.rfile,
             headers=self.headers,
