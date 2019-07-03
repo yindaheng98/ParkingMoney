@@ -1,4 +1,6 @@
 import picamera
+import requests
+import json
 camera = picamera.PiCamera()
 #from hyperlpr import HyperLPR_PlateRecogntion
 #import cv2
@@ -12,9 +14,16 @@ def capture(path):
 def detect(path):
     print('开始识别图像'+path)
     #image = cv2.imread(path)
-    id = '123456'
+    #id = '123456'
     #id = HyperLPR_PlateRecogntion(image)
-    print("识别结果"+id)
+    url1 = "http://yindaheng98.top:3003"  # 车牌识别接口地址
+    files = {'file': open(path, 'rb')}
+    r = requests.post(url1, {'arg': 1}, files=files)
+    id = json.loads(r.text)
+    print(id)  # 返回值即为识别结果
+    if id == [[]]:
+        return 0
+    id = id[0][0][0]
     return id
 
 

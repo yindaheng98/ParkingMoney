@@ -36,7 +36,7 @@ def loopUp():
         if response.text == 'yes':
             print("开始抬杆")
             if LimitAngleFlag == 0:
-                forward(0.003, 128)  # 512 steps --- 360 angle
+                backward(0.003, 128)  # 512 steps --- 360 angle
                 LimitAngleFlag = 1
 
 
@@ -44,7 +44,7 @@ def loopDown():
     global LimitAngleFlag
     print("开始落杆")
     if LimitAngleFlag == 1:
-        backward(0.003, 128)  # 512 steps --- 360 angle
+        forward(0.003, 128)  # 512 steps --- 360 angle
         LimitAngleFlag = 0
 
 

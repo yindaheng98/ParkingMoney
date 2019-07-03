@@ -18,13 +18,15 @@ def loopUp():
     AvoidValuefor = GPIO.input(AvoidSensorfor)
     if AvoidValuefor == False:
         id = capture_detect()
+        if id==0:
+            return
         print("入口处传数据"+url+id)
         response = requests.get(url+id)
         print("服务器返回"+response.text)
         if response.text[0:2] == 'ok':
             print("开始抬杆")
             if LimitAngleFlag == 0:
-                forward(0.003, 128)  # 512 steps --- 360 angle
+                backward(0.003, 128)  # 512 steps --- 360 angle
                 LimitAngleFlag = 1
         else:
             print("出错")
@@ -34,7 +36,7 @@ def loopDown():
     global LimitAngleFlag
     print("开始落杆")
     if LimitAngleFlag == 1:
-        backward(0.003, 128)  # 512 steps --- 360 angle
+        forward(0.003, 128)  # 512 steps --- 360 angle
         LimitAngleFlag = 0
 
 
