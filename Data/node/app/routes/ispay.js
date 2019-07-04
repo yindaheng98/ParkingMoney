@@ -8,7 +8,7 @@ function isPay(id, during, times) {
             if (times <= 0) return resolve('timeout');
             con.redis.get(id, (err, value) => {//先查一遍
                 if (err !== null) return reject(err);
-                if (value === null) return resolve();
+                if (value === null) return resolve('yes');
                 setTimeout(() => queryLoop(during, times - 1), during);
             });
         })(during, times);
