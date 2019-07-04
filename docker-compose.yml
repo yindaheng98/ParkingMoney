@@ -15,6 +15,9 @@ services:
     volumes: 
       - "./Data/node/app:/home/node/app"
       - "./Data/python/images:/home/node/app/public/images"
+    logging:
+      options: 
+        max-size: "10k"
 
   alipay:
     restart: always
@@ -27,6 +30,9 @@ services:
       - "proxy"
     volumes: 
       - "./Data/node/alipay:/home/node/app"
+    logging:
+      options: 
+        max-size: "10k"
 
   mysql:
     image: mysql

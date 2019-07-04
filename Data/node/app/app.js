@@ -14,7 +14,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((request, response, next) => {
-    console.log("本次请求的cookie是" + request.cookies);
+    console.log("本次请求的cid是" + request.cookies.cid);
     if (!request.cookies.cid || parseInt(request.cookies.cid) >= global['settings'].cid)
         response.cookie('cid', global['settings'].cid++, {maxAge: 100000});
     next();
