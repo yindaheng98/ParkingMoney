@@ -17,10 +17,10 @@ router.get('/:id', function (req, res, next) {
         }//如果无值
         let time = moment().valueOf();
         con.redis.set(id, time, function (err) {//就写入一个时间值
-            global.updated = true;
+            global['settings'].updated();
             if (err == null) {//写入成功，返回ok
                 res.end('ok:' + --global['settings']['车位总数']);
-                global.updated = true;
+                global['settings'].updated();
                 con.mysql.query(
                     "INSERT INTO Cars(时间,车牌号,动作)VALUES(FROM_UNIXTIME(?),?,0)",
                     [time / 1000, id],

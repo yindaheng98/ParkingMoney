@@ -23,7 +23,7 @@ function Exit(id) {
                     let value = moment(results[0]["时间"], moment.ISO_8601).valueOf();
                     let time_diff = time - value;
                     con.redis.set(id, value, (err) => {
-                        global.updated = true;
+                        global['settings'].updated();
                         if (err !== null) return reject(err);
                         return resolve(time_diff);
                     });
@@ -39,7 +39,7 @@ router.get('/:id', async (request, response, next) => {
         let money = time_diff / 1000;
         let order_data = await Pay.Order(id, money);//创建订单搞到订单ID和二维码
         response.end(order_data['qr']);//发回二维码
-        global.updated = true;
+        global['settings'].updated();
         let result = await Pay.isPay(id, order_data['id'], 500, 10000);
         if (result !== 'yes') return console.log("付款查询结果为" + result);
         con.redis.hdel('PayingCar', id, (error) => {//删掉系统中保存的订单号
@@ -47,7 +47,7 @@ router.get('/:id', async (request, response, next) => {
             con.redis.del(id, (error) => {//删掉时间值
                 ++global['settings']['车位总数'];
                 if (error != null) console.log(error);//写入失败，记录error
-                global.updated = true;
+                global['settings'].updated();
             });
             con.mysql.query(//数据库记一哈
                 "INSERT INTO 付款记录(时间,车牌号,金额)VALUES(FROM_UNIXTIME(?),?,?)",
