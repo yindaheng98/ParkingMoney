@@ -18,6 +18,8 @@ function getAll() {
             }
             for (let i in keys) {
                 let key = keys[i];
+                if (key === global['settings'].cid_list_name)
+                    continue;
                 if (key === 'PayingCar') {
                     con.redis.hkeys('PayingCar', (error, keys) => {
                         data['付款列表'] = keys;
