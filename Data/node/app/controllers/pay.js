@@ -31,11 +31,11 @@ function QueryLoop(url, car_id, order_id, during, times, resolve, reject) {
             s += data;
         });
         req.on('end', () => {
-            if (s === 'yes') return resolve();
-            if (times <= 0) return reject('timeout');
+            if (s === 'yes') return resolve('yes');
+            if (times <= 0) return resolve('timeout');
             con.redis.hget('PayingCar', car_id, (error, response) => {
                 if (error !== null) return reject(error);
-                if (response !== order_id) return reject('abort');//如果记录的订单被改了说明取消了订单
+                if (response !== order_id) return resolve('abort');//如果记录的订单被改了说明取消了订单
                 setTimeout(() => QueryLoop(url, car_id, order_id, during, times - 1, resolve, reject), during);
             });
         });
