@@ -15,6 +15,7 @@ function InitData(path) {
             });
         });
     });
+    settings.cid = 0;
     return settings;
 }
 
