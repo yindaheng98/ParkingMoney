@@ -16,7 +16,7 @@ function isPay(id, during, times) {
 }
 
 router.get('/:id', async (request, response, next) => {
-    let result = isPay(request.params.id, 500, 10000);
+    let result = await isPay(request.params.id, 500, 10000);
     if (result === 'yes') return response.end('yes');
     response.end('error');
     console.log("来自树莓派请求，订单查询结果为" + result);
