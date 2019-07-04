@@ -16,6 +16,18 @@ function InitData(path) {
         });
     });
     settings.cid = 0;
+    settings.cid_list_name = 'update_cid_list';
+    settings.updated = function () {
+        con.redis.hkeys(settings.cid_list_name, (error, keys) => {
+            if (error !== null) return console.log(error);
+            if (keys !== null)
+                keys.forEach((key, i) => {
+                    con.redis.hset(settings.cid_list_name, key, 1, (error) => {
+                        if (error !== null) console.log(error);
+                    })
+                })
+        })
+    };
     return settings;
 }
 

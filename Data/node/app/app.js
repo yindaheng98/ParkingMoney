@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const con = require('./controllers/connections');
 global['settings'] = require('./controllers/setup');
 
 var app = express();
@@ -15,8 +16,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((request, response, next) => {
     console.log("本次请求的cid是" + request.cookies.cid);
-    if (!request.cookies.cid || parseInt(request.cookies.cid) >= global['settings'].cid)
-        response.cookie('cid', global['settings'].cid++, {maxAge: 100000});
+    let cid = request.cookies.cid;
+    if (!cid || parseInt(cid) >= global['settings'].cid) {
+        cid = global['settings'].cid++;
+        response.cookie('cid', cid, {maxAge: 100000});
+    }
+    con.redis.hset(global['settings'].cid_list_name, cid, 0, (error) => {
+        if (error !== null) console.log(error);
+    });
     next();
 });
 app.use('/index', require('./routes/index'));
