@@ -40,7 +40,7 @@ router.get('/:id', async (request, response, next) => {
         let order_data = await Pay.Order(id, money);//创建订单搞到订单ID和二维码
         response.end(order_data['qr']);//发回二维码
         global.updated = true;
-        let result = await Pay.isPay(id, data['id'], 500, 10000);
+        let result = await Pay.isPay(id, order_data['id'], 500, 10000);
         if (result !== 'yes') return console.log("付款查询结果为" + result);
         con.redis.hdel('PayingCar', id, (error) => {//删掉系统中保存的订单号
             if (error !== null) console.log(error);
