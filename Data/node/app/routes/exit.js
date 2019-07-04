@@ -32,19 +32,15 @@ function Exit(id) {
     })
 }
 
-router.get('/:id', function (request, response, next) {
-    let id = request.params.id;
-    let money = 0;
-    Exit(id).then((time_diff) => {
-        money = time_diff / 1000;
-        return Pay.Order(id, money);//创建订单搞到订单ID和二维码
-    }).then((data) => {//data就是订单ID和二维码
-        response.end(data['qr']);//发回二维码
-        //开始轮询订单状态
+router.get('/:id', async (request, response, next) => {
+    try {
+        let id = request.params.id;
+        let time_diff = await Exit(id);
+        let money = time_diff / 1000;
+        let order_data = await Pay.Order(id, money);//创建订单搞到订单ID和二维码
+        response.end(order_data['qr']);//发回二维码
         global.updated = true;
-        return Pay.isPay(id, data['id'], 500, 10000);
-
-    }).then(() => {//Pay.isPay的resolve表示支付完成
+        await Pay.isPay(id, data['id'], 500, 10000);
         con.redis.hdel('PayingCar', id, (error) => {//删掉系统中保存的订单号
             if (error !== null) console.log(error);
             con.redis.del(id, (error) => {//删掉时间值
@@ -65,11 +61,13 @@ router.get('/:id', function (request, response, next) {
             (error) => {
                 if (error != null) console.log(error)//写入失败，记录error
             });
-    }).catch((e) => {
+
+    } catch (e) {
         console.log(e);
         if (e !== 'abort' && e !== 'timeout')
             response.end('error');
-    })
+
+    }
 });
 
 module.exports = router;
