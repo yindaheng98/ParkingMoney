@@ -19,7 +19,7 @@ app.use((request, response, next) => {
     let cid = request.cookies.cid;
     if (!cid || parseInt(cid) >= global['settings'].cid) {
         cid = global['settings'].cid++;
-        response.cookie('cid', cid, {maxAge: 100000});
+        response.cookie('cid', cid, {maxAge: 24*3600*1000});
     }
     con.redis.hset(global['settings'].cid_list_name, cid, 0, (error) => {
         if (error !== null) console.log(error);
