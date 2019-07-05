@@ -7,6 +7,9 @@ from cairosvg import svg2png
 from ParkingMoney import AvoidSensorfor, AvoidSensorbac, destroy
 from ParkingMoney.motor import forward, backward, stop
 from ParkingMoney.camera import capture_detect
+import subprocess
+import time
+
 
 AvoidValuefor = False
 AvoidValuebac = False
@@ -21,15 +24,18 @@ url_ispay = 'http://yindaheng98.top:3001/ispay/'
 def loopUp():
     global LimitAngleFlag
     AvoidValuefor = GPIO.input(AvoidSensorfor)
-    if AvoidValuefor == False:
-        id = capture_detect()
-        print("出口处传数据"+url_exit+id)
-        response = requests.get(url_exit+id)
-        if response.text=='error':
-            print('出错')
-            return
+    print("出口处传数据"+url_exit+id)
+    response = requests.get(url_exit+id)
+    if response.text=='error':
+        print('出错')
+        return 0
+    else:
         svg2png(bytestring=response.text, write_to='output.png')
         #cv2.imshow('二维码', cv2.imread('output.png'))
+        p=subprocess.Popen('gpicview output.png',shell=True)
+        print(p)
+        time.sleep(10)
+        p.kill()
         print("出口处查询付款情况"+url_ispay+id)
         response = requests.get(url_ispay+id)
         print('result:'+response.text)
@@ -51,17 +57,35 @@ def loopDown():
 if __name__ == '__main__':  # Program start from here
     try:
         while True:
-            loopUp()
-            AvoidValuebac=GPIO.input(AvoidSensorbac)
-            if AvoidValuebac==False:
-                print ("111111111111!")
+            flag = 0
+            AvoidValuefor = GPIO.input(AvoidSensorfor)
+            if AvoidValuefor == False:
                 while True:
-                    print ("222222222!")
-                    AvoidValuebac=GPIO.input(AvoidSensorbac)
-                    if AvoidValuebac==True:
-                        print ("3333333333!")
-                        loopDown()
+                    id = capture_detect()
+                    AvoidValuefor = GPIO.input(AvoidSensorfor)
+                    if AvoidValuefor == True:
+                        print("car could't out and is off")
                         break
-                       
+                    if id!=0:
+                        #break   
+                        #if AvoidValuefor == False:
+
+                        if loopUp() == 0:
+                            continue
+                        print("抬杆完成")
+                        while True:
+                            AvoidValuebac = GPIO.input(AvoidSensorbac)
+                            if AvoidValuebac == False:
+                                print("")
+                                while True:
+                                    AvoidValuebac = GPIO.input(AvoidSensorbac)
+                                    if AvoidValuebac == True:
+                                        print("车已开走")
+                                        loopDown()
+                                        flag = 1
+                                        break
+                            if flag==1:
+                                break
+                        break
     except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the child function destroy() will be  executed.
         destroy()

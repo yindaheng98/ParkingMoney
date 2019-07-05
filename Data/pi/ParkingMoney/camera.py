@@ -17,8 +17,12 @@ def detect(path):
     #id = '123456'
     #id = HyperLPR_PlateRecogntion(image)
     url1 = "http://yindaheng98.top:3003"  # 车牌识别接口地址
+    
     files = {'file': open(path, 'rb')}
-    r = requests.post(url1, {'arg': 1}, files=files)
+   
+    r = requests.post(url1, {'arg': 3}, files=files) 
+    print("a")
+    print(r.text)
     id = json.loads(r.text)
     print(id)  # 返回值即为识别结果
     if id == [[]]:
