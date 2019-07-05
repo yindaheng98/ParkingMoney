@@ -29,10 +29,12 @@
             },
             complete: function (XMLHttpRequest, status) { //求完成后最终执行参数
                 // 设置timeout的时间，通过检测complete时status的值判断请求是否超时，如果超时执行响应的操作
-                console.log(status);//超时,status还有success,error等值的情况
-                ajaxTimeoutTest.abort();
-                b = false;
-                roll_updatePage();
+                if(status!=='success'){
+                    console.log(status);//超时,status还有success,error等值的情况
+                    ajaxTimeoutTest.abort();
+                    b = false;
+                    roll_updatePage();
+                }
             }
         });
     }
