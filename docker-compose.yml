@@ -5,7 +5,7 @@ services:
     depends_on: 
       - mysql
       - redis
-    build: ./node
+    build: ./app
     expose: 
       - "3000"
     ports: 
@@ -13,37 +13,35 @@ services:
     networks: 
       - "proxy"
     volumes: 
-      - "./Data/node/app:/home/node/app"
-      - "./Data/python/images:/home/node/app/public/images"
+      - "./python/images:/home/node/app/public/images"
     logging:
       options: 
         max-size: "10k"
 
   alipay:
     restart: always
-    build: ./node
+    build: ./alipay
     expose: 
       - "3000"
     ports: 
       - "3002:3000"
     networks: 
       - "proxy"
-    volumes: 
-      - "./Data/node/alipay:/home/node/app"
     logging:
       options: 
         max-size: "10k"
 
   mysql:
     image: mysql
-    expose: 
-      - "3306"
     ports: 
-      - "3308:3306"
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes: 
+      - ./CarsData.sql:/docker-entrypoint-initdb.d/CarsData.sql
     networks: 
       - "proxy"
-    volumes: 
-      - "./Data/mysql:/var/lib/mysql"
 
   redis:
     image: redis
@@ -53,9 +51,10 @@ services:
       - "proxy"
       
   python:
+    restart: always
     depends_on: 
       - mysql
-    build: ./py
+    build: ./python
     expose: 
       - "8080"
     ports: 
@@ -63,8 +62,7 @@ services:
     networks: 
       - "proxy"
     volumes: 
-      - "./Data/python:/usr/src/app"
-    restart: always
+      - "./python/images:/usr/src/app/images"
     logging:
       options: 
         max-size: "10k"
@@ -72,5 +70,3 @@ services:
 networks: 
   proxy:
     driver: bridge
-
-
