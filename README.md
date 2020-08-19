@@ -29,17 +29,17 @@ URL=https://raw.githubusercontent.com/yindaheng98/ParkingMoney/master
 
 ```shell
 URL=https://raw.githubusercontent.com/yindaheng98/ParkingMoney/master
-kubectl apply -f $URL/configmap-alipay.yaml
-kubectl apply -f $URL/configmap-app.yaml
+kubectl apply -f $URL/config-map.yaml
 kubectl apply -f $URL/pv-pic-ssd.yaml
 kubectl apply -f $URL/parking-money.yaml
-kubectl apply -f $URL/service-parking-money.yaml
+kubectl apply -f $URL/service.yaml
 ```
 
 ### 删除部署
 
 ```shell
-kubectl delete svc parking-money
+kubectl delete svc parking-money-app
+kubectl delete svc parking-money-python
 kubectl delete statefulset parking-money-deploy
 kubectl delete pvc pictures-parking-money-deploy-0
 kubectl delete pv pv-parking-money-pic

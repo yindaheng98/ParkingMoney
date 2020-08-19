@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: parking-money-app
+spec:
+  selector:
+    app: parking-money
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: parking-money-python
+spec:
+  selector:
+    app: parking-money
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
