@@ -2,9 +2,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: parking-money-configmap-app
-data: |
-  {
-    "车位总数": 8,
-    "订单创建地址": "http://localhost:3001/create",
-    "订单查询地址": "http://localhost:3001/ispay"
-  }
+data:
+  json: |
+    {
+      "车位总数": 8,
+      "订单创建地址": "http://localhost:3001/create",
+      "订单查询地址": "http://localhost:3001/ispay"
+    }

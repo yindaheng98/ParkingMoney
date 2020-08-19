@@ -13,7 +13,23 @@ spec:
       labels:
         app: parking-money
     spec:
+      volumes:
+        - name: configmap-app
+          configMap:
+            name: parking-money-config-app
+            items:
+              - key: json
+                path: 设置.json
       containers:
+        - name: parking-money-app-container
+          image: yindaheng98/parking-money-app
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: configmap-app
+              mountPath: /home/node/app/controllers
+            - name: pictures
+              mountPath: /home/node/app/public/images
         - name: parking-money-alipay-container
           image: yindaheng98/parking-money-alipay
           ports:
@@ -21,15 +37,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: parking-money-configmap-alipay
-        - name: parking-money-app-container
-          image: yindaheng98/parking-money-app
-          ports:
-            - containerPort: 3000
-          volumeMounts:
-            - name: configmap-app
-              mountPath: /home/node/app/controllers/设置.json
-            - name: pictures
-              mountPath: /home/node/app/public/images
         - name: parking-money-python-container
           image: yindaheng98/parking-money-python
           ports:
@@ -37,10 +44,6 @@ spec:
           volumeMounts:
             - name: pictures
               mountPath: /usr/src/app/images
-      volumes:
-        - name: configmap-app
-          configMap:
-            name: parking-money-config-app
   volumeClaimTemplates:
     - metadata:
         name: pictures
