@@ -1,7 +1,7 @@
 #coding=utf-8
 import requests
 import json
-url = "http://yindaheng98.top:3003"#车牌识别接口地址
+url = "http://hyper-hdr.parking-money.yindaheng98.top:30000"#车牌识别接口地址
 path = "timg.jpg"#要识别的文件路径
 files = {'file': open(path, 'rb')}
 r = requests.post(url,data={'arg':2}, files=files)

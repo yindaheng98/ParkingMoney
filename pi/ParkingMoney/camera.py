@@ -16,7 +16,7 @@ def detect(path):
     #image = cv2.imread(path)
     #id = '123456'
     #id = HyperLPR_PlateRecogntion(image)
-    url1 = "http://yindaheng98.top:3003"  # 车牌识别接口地址
+    url1 = "http://hyper-hdr.parking-money.yindaheng98.top:30000"  # 车牌识别接口地址
     
     files = {'file': open(path, 'rb')}
    

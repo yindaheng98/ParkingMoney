@@ -11,7 +11,7 @@ LimitAngleFlag = 0
 full_flag = False
 
 
-url = 'http://yindaheng98.top:3001/enter/'
+url = 'http://parking-money.yindaheng98.top:30000/enter/'
 
 
 def loopUp():

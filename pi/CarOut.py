@@ -16,9 +16,9 @@ AvoidValuebac = False
 LimitAngleFlag = 0
 
 
-url_exit = 'http://yindaheng98.top:3001/exit/'
+url_exit = 'http://parking-money.yindaheng98.top:30000/exit/'
 
-url_ispay = 'http://yindaheng98.top:3001/ispay/'
+url_ispay = 'http://parking-money.yindaheng98.top:30000/ispay/'
 
 
 def loopUp():
