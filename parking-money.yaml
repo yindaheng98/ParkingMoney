@@ -28,14 +28,14 @@ spec:
           volumeMounts:
             - name: configmap-app
               mountPath: /home/node/app/controllers/设置.json
-            - name: parking-money-pic
+            - name: pictures
               mountPath: /home/node/app/public/images
         - name: parking-money-python-container
           image: yindaheng98/parking-money-python
           ports:
             - containerPort: 8080
           volumeMounts:
-            - name: parking-money-pic
+            - name: pictures
               mountPath: /usr/src/app/images
       volumes:
         - name: configmap-app
@@ -43,7 +43,7 @@ spec:
             name: parking-money-config-app
   volumeClaimTemplates:
     - metadata:
-        name: parking-money-pic
+        name: pictures
       spec:
         accessModes:
           - ReadWriteMany
