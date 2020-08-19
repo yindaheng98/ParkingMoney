@@ -3,6 +3,7 @@ kind: StatefulSet
 metadata:
   name: parking-money-deploy
 spec:
+  serviceName: parking-money
   replicas: 1
   selector:
     matchLabels:
