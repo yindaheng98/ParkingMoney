@@ -17,7 +17,7 @@ spec:
       volumes:
         - name: configmap-app
           configMap:
-            name: parking-money-config-app
+            name: parking-money-configmap-app
             items:
               - key: json
                 path: 设置.json
