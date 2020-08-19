@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: parking-money-configmap-alipay
 data:
-  PORT: 3001
+  PORT: "3001"

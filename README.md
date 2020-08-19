@@ -43,4 +43,6 @@ kubectl delete svc parking-money
 kubectl delete statefulset parking-money-deploy
 kubectl delete pvc pictures-parking-money-deploy-0
 kubectl delete pv pv-parking-money-pic
+kubectl delete cm parking-money-configmap-app
+kubectl delete cm parking-money-configmap-alipay
 ```
