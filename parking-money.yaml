@@ -28,7 +28,8 @@ spec:
             - containerPort: 3000
           volumeMounts:
             - name: configmap-app
-              mountPath: /home/node/app/controllers
+              mountPath: /home/node/app/controllers/设置.json
+              subPath: 设置.json
             - name: pictures
               mountPath: /home/node/app/public/images
         - name: parking-money-alipay-container
