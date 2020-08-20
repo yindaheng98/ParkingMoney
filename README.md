@@ -22,7 +22,6 @@ kubectl apply -f ./configmap-app.yaml
 kubectl apply -f ./pv-pic-ssd.yaml
 kubectl apply -f ./parking-money.yaml
 kubectl apply -f ./service-parking-money.yaml
-URL=https://raw.githubusercontent.com/yindaheng98/ParkingMoney/master
 ```
 
 ### 联网部署
