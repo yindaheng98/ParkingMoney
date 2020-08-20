@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-parking-money
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: parking-money.yindaheng98.top
+      http:
+        paths:
+          - path: /()(.*)
+            backend:
+              serviceName: parking-money-app
+              servicePort: 3000
+    - host: alipay.parking-money.yindaheng98.top
+      http:
+        paths:
+          - path: /()(.*)
+            backend:
+              serviceName: parking-money-alipay
+              servicePort: 3000
+    - host: hyper-hdr.parking-money.yindaheng98.top
+      http:
+        paths:
+          - path: /()(.*)
+            backend:
+              serviceName: parking-money-python
+              servicePort: 8080
