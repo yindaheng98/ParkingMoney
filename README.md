@@ -33,11 +33,13 @@ kubectl apply -f $URL/config-map.yaml
 kubectl apply -f $URL/pv-pic-ssd.yaml
 kubectl apply -f $URL/parking-money.yaml
 kubectl apply -f $URL/service.yaml
+kubectl apply -f $URL/ingress.yaml
 ```
 
 ### 删除部署
 
 ```shell
+kubectl delete ing ingress-parking-money
 kubectl delete svc parking-money-app
 kubectl delete svc parking-money-python
 kubectl delete statefulset parking-money-deploy
